@@ -1,3 +1,4 @@
+from pytest import raises
 from times import compute_overlap_time, time_range
 
 def test_generic_case():
@@ -24,3 +25,8 @@ def test_touching_edges():
     after = time_range("2010-01-12 11:00:00", "2010-01-12 12:45:00")
     expected = []
     assert compute_overlap_time(before, after) == expected
+
+def test_negative_time_range():
+    expected_error_message = 'The end of the time range has to come strictly after its start.'
+    with raises(ValueError, match=expected_error_message):
+        time_range("2010-01-12 10:00:00", "2010-01-12 09:30:00")
